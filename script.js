@@ -1,32 +1,38 @@
-// Select all price cells
-const priceCells = document.querySelectorAll('.price');
+// Create button dynamically
+const getSumBtn = document.createElement("button");
+getSumBtn.append("Get Total Price");
+document.body.appendChild(getSumBtn);
 
-let total = 0;
+const getSum = () => {
+  // Remove old total row if already exists (avoid duplicates)
+  const oldTotal = document.querySelector(".total-row");
+  if (oldTotal) {
+    oldTotal.remove();
+  }
 
-// Sum up the prices
-priceCells.forEach(cell => {
-    total += parseFloat(cell.textContent);
-});
+  // Select all price cells
+  const priceCells = document.querySelectorAll(".price");
+  let total = 0;
 
-// Select the table
-const table = document.getElementById('groceryTable');
+  // Sum up all prices
+  priceCells.forEach(cell => {
+    total += parseInt(cell.textContent, 10);
+  });
 
-// Create a new row
-const totalRow = document.createElement('tr');
+  // Create new row for total
+  const table = document.querySelector("table");
+  const newRow = document.createElement("tr");
+  newRow.classList.add("total-row");
 
-// First cell (Item column) – leave empty
-const emptyCell = document.createElement('td');
-emptyCell.textContent = "Total";
-emptyCell.style.fontWeight = 'bold';
+  const newCell = document.createElement("td");
+  newCell.id = "ans";
+  newCell.setAttribute("colspan", "2");
+  newCell.style.fontWeight = "bold";
+  newCell.textContent = "Total Price: Rs " + total;
 
-// Second cell (Price column) – show total
-const totalCell = document.createElement('td');
-totalCell.textContent = total;
-totalCell.style.fontWeight = 'bold';
+  newRow.appendChild(newCell);
+  table.appendChild(newRow);
+};
 
-// Append cells to the row
-totalRow.appendChild(emptyCell);
-totalRow.appendChild(totalCell);
-
-// Append the row to the table
-table.appendChild(totalRow);
+// Event listener for button
+getSumBtn.addEventListener("click", getSum);
